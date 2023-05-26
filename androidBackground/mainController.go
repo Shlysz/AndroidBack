@@ -26,7 +26,7 @@ func loginHandler(mygin *gin.Context) {
 	username := mygin.PostForm("username")
 	password := mygin.PostForm("password")
 	account := respo.Account{Username: username, Password: password}
-	if account.Login() {
+	if account.Login() == true {
 		mygin.JSON(200, gin.H{
 			"message": "success",
 			"key":     account.Key,

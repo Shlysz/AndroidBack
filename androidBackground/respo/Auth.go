@@ -17,9 +17,13 @@ func (a Account) TableName() string {
 
 // Login account的子函数
 func (a *Account) Login() bool {
-	account := Account{}
-	//查找数据库中时候有没有这个账号
-	GolbalDB.First(&account).Where("username = ?", a.Username)
+	account := Account{"", "", ""}
+	//查找数据库中时候有没有这个账号,为什么会返回a.Username=="test2"数据库中并没有这条数据;
+	tx := GolbalDB.Where("username = ?", a.Username).First(&account)
+
+	if tx.Error != nil {
+		return false
+	}
 	//如果没有这个账号
 	if account.Username == "" {
 		return false
@@ -35,7 +39,7 @@ func (a *Account) Login() bool {
 		//使用base64编码
 		encodedString := base64.StdEncoding.EncodeToString(key[:])
 		a.Key = encodedString
-		GolbalDB.Model(&account).Update("key", encodedString)
+		GolbalDB.Model(&account).Update("`key`", encodedString)
 		return true
 	}
 	a.Key = account.Key
@@ -44,7 +48,9 @@ func (a *Account) Login() bool {
 
 func (a Account) GetUsernameByKey() string {
 	account := Account{}
-	tx := GolbalDB.First(&account).Where("key = ?", a.Key)
+	//ISMvKXpXpadDiUoOSoAfww==
+	//"为什么找不到呢？",数据库中有这条数据，但是返回的是空字符串
+	tx := GolbalDB.Where("`key` = ?", a.Key).First(&account)
 	if tx.Error != nil {
 		return ""
 	}

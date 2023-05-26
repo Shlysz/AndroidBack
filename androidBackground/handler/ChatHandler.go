@@ -35,31 +35,6 @@ func getRetMessage(question string, key string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//fmt.Printf("%s\n", bodyText)
-	//调用chatgpt 3.5的api
-	//allquestion := makeMessages(key, question)
-	////协程插入新的问题
-	//go respo.Message{Role: "user", Content: question}.AddMessage()
-	//client := &http.Client{}
-	//var data = strings.NewReader(`{
-	// "model": "gpt-3.5-turbo",
-	// "messages": ` + allquestion + `,
-	//}`)
-	//req, err := http.NewRequest("POST", "https://api.openai.com/v1/chat/completions", data)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//req.Header.Set("Content-Type", "application/json")
-	//req.Header.Set("Authorization", "Bearer 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")
-	//resp, err := client.Do(req)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//defer resp.Body.Close()
-	//bodyText, err := io.ReadAll(resp.Body)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
 	var retMessage entityClass.Response
 	err = json.Unmarshal([]byte(bodyText), &retMessage)
 	if err != nil {
